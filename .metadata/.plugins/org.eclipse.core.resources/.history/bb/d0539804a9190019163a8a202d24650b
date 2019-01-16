@@ -21,13 +21,14 @@ public class SetDemo {
 
 	public static void main(String[] args) {
 		HashSet();
-		Book b1 = new Book("tsaingaf","mrk manson", 2016); //both will return diff hashcode (memory address of obj, after int conversion)
+		Book b1 = new Book("tsaingaf","mrk manson", 2016);
 		Book b2 = new Book("tsaingaf","mrk manson", 2016);
 		
-		Set<Book> set2 = new HashSet<Book>();
+		Set<String> set2 = new HashSet<String>();
 		set2.add(b1);
 		set2.add(b2);
-		System.out.println("set2: " +  set2);
+		
+		
 	}
 
 }

@@ -2,3 +2,5 @@
 1547652501825	Delete element
 1547652618699	Delete element
 1547653927720	Rename method 'hashSet'
+1547654813481	Rename method 'showNoDupValHashSet'
+1547654848007	Rename local variable 'set1'
