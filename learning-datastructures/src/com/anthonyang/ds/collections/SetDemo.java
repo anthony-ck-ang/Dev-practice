@@ -1,18 +1,20 @@
 package com.anthonyang.ds.collections;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class SetDemo {
 
 	/*
-	 * HashTable
-	 * No duplicate keys, duplicate value is ok, 1 key -> 1 value is ok, 1 null key
+	 * HashTable No duplicate keys, duplicate value is ok, 1 key -> 1 value is
+	 * ok, 1 null key
+	 * 
+	 * Hashset -> hash table implementation of Set interface
 	 * 
 	 * Use Case rapid lookup, insert, delete O(1) Insertion order is not
 	 * important Better for removeAll() & retainAll()
 	 * 
-	 * Hashset -> hash table implementation of Set interface
 	 * uses hashmap internally (k,v)
 	 */
 
@@ -25,15 +27,43 @@ public class SetDemo {
 		System.out.println("set1: " + set1); // no duplicate values
 	}
 
+	/*
+	 * LinkedHashSet == hash table + linked list implementation of Set interface
+	 * insertion order preserved + fast O(1), very fast lookup, insertion, deletion O(1)
+	 * better for removeAll() & retainAll()
+	 * 
+	 */
+
+	public static void linkedHashSet() {
+		Set<String> hashSet = new HashSet<>();
+		hashSet.add("aaaaa");
+		hashSet.add("bbbbb");
+		hashSet.add("ccccc");
+		System.out.println("hashSet: " + hashSet);
+
+		Set<String> linkedHashSet = new LinkedHashSet<>();
+		linkedHashSet.add("aaaaa");
+		linkedHashSet.add("bbbbb");
+		linkedHashSet.add("ccccc");
+		System.out.println("linkedHashSet: " + linkedHashSet); // order
+																// preserved
+	}
+
 	public static void main(String[] args) {
 		HashSet();
-		Book b1 = new Book("tsaingaf","mrk manson", 2016); //both will return diff hashcode (memory address of obj, after int conversion)
-		Book b2 = new Book("tsaingaf","mrk manson", 2016);
-		
+		Book b1 = new Book("tsaingaf", "mrk manson", 2016); // both will return
+															// diff hashcode
+															// (memory address
+															// of obj, after int
+															// conversion)
+		Book b2 = new Book("tsaingaf", "mrk manson", 2016);
+
 		Set<Book> set2 = new HashSet<Book>();
 		set2.add(b1);
 		set2.add(b2);
-		System.out.println("set2: " +  set2);
+		System.out.println("set2: " + set2);
+
+		linkedHashSet();
 	}
 
 }
@@ -42,7 +72,6 @@ class Book {
 	private String title;
 	private String author;
 	private int year;
-
 
 	public Book(String title, String author, int year) {
 		super();
@@ -81,12 +110,13 @@ class Book {
 	}
 
 	/*
-	 * Always override hashcode when you override equals
-	 * -> to unique yet equal objects
+	 * Always override hashcode when you override equals -> to unique yet equal
+	 * objects
 	 */
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -101,6 +131,7 @@ class Book {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -127,19 +158,18 @@ class Book {
 		return true;
 	}
 
-//	@Override
-//	public int hashCode() {
-//		return title.hashCode(); //both obj will return same hashcode
-//	}
-//
-//	//overide equal method used by object class internally as it uses "==" thus obj ref will be different
-//	@Override
-//	public boolean equals(Object obj) {
-//		return (year == (((Book)obj).getYear())) && (author.equals((((Book)obj).getAuthor())));
-//	}
-//	
-	
-	
-	
-	
+	// @Override
+	// public int hashCode() {
+	// return title.hashCode(); //both obj will return same hashcode
+	// }
+	//
+	// //overide equal method used by object class internally as it uses "=="
+	// thus obj ref will be different
+	// @Override
+	// public boolean equals(Object obj) {
+	// return (year == (((Book)obj).getYear())) &&
+	// (author.equals((((Book)obj).getAuthor())));
+	// }
+	//
+
 }
