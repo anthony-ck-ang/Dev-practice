@@ -3,6 +3,7 @@ package com.anthonyang.ds.collections;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class SetDemo {
 
@@ -25,12 +26,24 @@ public class SetDemo {
 		set1.add("a");
 
 		System.out.println("set1: " + set1); // no duplicate values
+
+		/*
+		 * both will return diff hashcode (memory address of obj, after int
+		 * conversion
+		 */
+		Book b1 = new Book("tsaingaf", "mrk manson", 2016);
+		Book b2 = new Book("tsaingaf", "mrk manson", 2016);
+
+		Set<Book> set2 = new HashSet<Book>();
+		set2.add(b1);
+		set2.add(b2);
+		System.out.println("set2: " + set2);
 	}
 
 	/*
 	 * LinkedHashSet == hash table + linked list implementation of Set interface
-	 * insertion order preserved + fast O(1), very fast lookup, insertion, deletion O(1)
-	 * better for removeAll() & retainAll()
+	 * insertion order preserved + fast O(1), very fast lookup, insertion,
+	 * deletion O(1) better for removeAll() & retainAll()
 	 * 
 	 */
 
@@ -46,24 +59,24 @@ public class SetDemo {
 		linkedHashSet.add("bbbbb");
 		linkedHashSet.add("ccccc");
 		System.out.println("linkedHashSet: " + linkedHashSet); // order
-																// preserved	
+																// preserved
 	}
 
-	
+	private static void treeSet() {
+		Book b1 = new Book("abcd", "JK", 2017);
+		Book b2 = new Book("abcd", "JK", 2017);
+		Book b3 = new Book("EF", "KFE", 1964);
+		Book b4 = new Book("NO", "KO", 2018);
+
+		Set<Book> books = new TreeSet<>();
+		books.add(b1);
+		books.add(b2);
+		books.add(b3);
+		books.add(b4);
+	}
+
 	public static void main(String[] args) {
 		HashSet();
-		Book b1 = new Book("tsaingaf", "mrk manson", 2016); // both will return
-															// diff hashcode
-															// (memory address
-															// of obj, after int
-															// conversion)
-		Book b2 = new Book("tsaingaf", "mrk manson", 2016);
-
-		Set<Book> set2 = new HashSet<Book>();
-		set2.add(b1);
-		set2.add(b2);
-		System.out.println("set2: " + set2);
-
 		linkedHashSet();
 	}
 
