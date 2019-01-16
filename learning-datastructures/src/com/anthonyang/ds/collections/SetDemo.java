@@ -74,6 +74,14 @@ class Book {
 		return "Book [title=" + title + ", author=" + author + ", year=" + year + "]";
 	}
 
+	/*
+	 * Always override hashcode when you override equals
+	 */
+	
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -84,6 +92,10 @@ class Book {
 		return result;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
