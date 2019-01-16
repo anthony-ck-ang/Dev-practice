@@ -1,0 +1,22 @@
+package com.anthonyang.ds.hashtable;
+
+public class HashTable {
+
+	String [] hashArray;
+	int arraySize; //no of slots in entire array
+	int size = 0; //counter for number of elements in hash table
+	
+	public HashTable(int noOfSlots) {
+		
+		if(isPrime(noOfSlots)){
+			hashArray = new String[noOfSlots];
+			arraySize = noOfSlots;
+		}else{
+			int newPrimeNo = getNextPrime(noOfSlots);
+			hashArray = new String[newPrimeNo];
+			arraySize = newPrimeNo;
+		}
+	}
+	
+	
+}
