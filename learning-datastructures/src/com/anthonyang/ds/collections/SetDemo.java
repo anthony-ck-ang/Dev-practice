@@ -34,7 +34,7 @@ public class SetDemo {
 	 * 
 	 */
 
-	public static void linkedHashSet() {
+	private static void linkedHashSet() {
 		Set<String> hashSet = new HashSet<>();
 		hashSet.add("aaaaa");
 		hashSet.add("bbbbb");
@@ -46,9 +46,10 @@ public class SetDemo {
 		linkedHashSet.add("bbbbb");
 		linkedHashSet.add("ccccc");
 		System.out.println("linkedHashSet: " + linkedHashSet); // order
-																// preserved
+																// preserved	
 	}
 
+	
 	public static void main(String[] args) {
 		HashSet();
 		Book b1 = new Book("tsaingaf", "mrk manson", 2016); // both will return
