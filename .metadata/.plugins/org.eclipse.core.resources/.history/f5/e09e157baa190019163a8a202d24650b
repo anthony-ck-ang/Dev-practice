@@ -82,7 +82,7 @@ class Book {
 	//overide equal method used by object class internally as it uses "==" thus obj ref will be different
 	@Override
 	public boolean equals(Object obj) {
-		return (year == (((Book)obj).getYear())) && (author.equals((((Book)obj).getAuthor())));
+		return (year == (((Book)o).getYear())) && (author.equals((((Book)o).getAuthor())));
 	}
 	
 	

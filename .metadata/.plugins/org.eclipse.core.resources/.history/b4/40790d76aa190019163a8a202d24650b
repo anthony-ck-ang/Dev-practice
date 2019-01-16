@@ -73,18 +73,5 @@ class Book {
 	public String toString() {
 		return "Book [title=" + title + ", author=" + author + ", year=" + year + "]";
 	}
-
-	@Override
-	public int hashCode() {
-		return title.hashCode(); //both obj will return same hashcode
-	}
-
-	//overide equal method used by object class internally as it uses "==" thus obj ref will be different
-	@Override
-	public boolean equals(Object obj) {
-		return (year == (((Book)obj).getYear())) && (author.equals((((Book)obj).getAuthor())));
-	}
-	
-	
 	
 }
