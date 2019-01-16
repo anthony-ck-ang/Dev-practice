@@ -1,6 +1,7 @@
 package com.anthonyang.ds.collections;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.TreeSet;
@@ -62,9 +63,16 @@ public class SetDemo {
 																// preserved
 	}
 
+	/*
+	 * 1. Natural ordering - java.lang.Comparable 
+	 * 	- the elements define internally how to be sorted
+	 * 
+	 * 2. External - java.util.Comparator
+	 */
+	
 	private static void treeSet() {
-		Book b1 = new Book("abcd", "JK", 2017);
-		Book b2 = new Book("abcd", "JK", 2017);
+		Book b1 = new Book("ABC", "JK", 2017);
+		Book b2 = new Book("ABC", "JK", 2017); // duplicate is not added
 		Book b3 = new Book("EF", "KFE", 1964);
 		Book b4 = new Book("NO", "KO", 2018);
 
@@ -73,16 +81,22 @@ public class SetDemo {
 		books.add(b2);
 		books.add(b3);
 		books.add(b4);
+
+		// Set is sorted
+		for (Book book : books) {
+			System.out.println(book);
+		}
 	}
 
 	public static void main(String[] args) {
 		HashSet();
 		linkedHashSet();
+		treeSet();
 	}
 
 }
 
-class Book {
+class Book implements Comparable<Object> {
 	private String title;
 	private String author;
 	private int year;
@@ -170,6 +184,14 @@ class Book {
 		if (year != other.year)
 			return false;
 		return true;
+	}
+
+	@Override
+	public int compareTo(Object book) {
+		return getTitle().compareTo(((Book) book).getTitle()); // like comparing
+																// Strings,
+																// using String
+																// CompareTo
 	}
 
 	// @Override
