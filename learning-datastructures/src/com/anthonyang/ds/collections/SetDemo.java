@@ -6,8 +6,14 @@ import java.util.Set;
 public class SetDemo {
 
 	/*
+	 * HashTable
+	 * No duplicate keys, duplicate value is ok, 1 key -> 1 value is ok, 1 null key
+	 * 
 	 * Use Case rapid lookup, insert, delete O(1) Insertion order is not
 	 * important Better for removeAll() & retainAll()
+	 * 
+	 * Hashset -> hash table implementation of Set interface
+	 * uses hashmap internally (k,v)
 	 */
 
 	private static void HashSet() {
@@ -76,6 +82,7 @@ class Book {
 
 	/*
 	 * Always override hashcode when you override equals
+	 * -> to unique yet equal objects
 	 */
 	
 	/*

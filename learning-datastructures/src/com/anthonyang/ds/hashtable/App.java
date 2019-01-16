@@ -21,12 +21,12 @@ public class App {
 		table.insert("space");
 		
 		
-//		System.out.println("**---------FIND ELEMENTS---------**");
-//		System.out.println(table.find("time"));
-//		System.out.println(table.find("self"));
-//		System.out.println(table.find("blue"));
-//		System.out.println(table.find("taste"));
-//		System.out.println(table.find("travel"));
+		System.out.println("**---------FIND ELEMENTS---------**");
+		System.out.println(table.find("time"));
+		System.out.println(table.find("self"));
+		System.out.println(table.find("blue"));
+		System.out.println(table.find("taste"));
+		System.out.println(table.find("travel"));
 		
 		table.displayTable();
 	}
