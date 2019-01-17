@@ -11,10 +11,12 @@ public class MapDemo {
 		map1.put("James", 29);
 		map1.put("John", 27);
 		map1.put("Ken", null);
+		
+		System.out.println(map1);
 	}
 
 	public static void main(String[] args) {
-
+		hashMap();
 	}
 
 }
