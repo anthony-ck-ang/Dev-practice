@@ -49,7 +49,7 @@ public class MapDemo {
 		}
 		
 		System.out.println("-------------------");
-		mappings.forEach(m -> System.out.println("Another way..." + m.getKey() + " " + m.getValue()));
+		mappings.forEach(m -> System.out.println("Using Lambda: " + m.getKey() + " " + m.getValue()));
 
 		names.remove("Ken"); // removing the key from the new names Set will
 								// affect the original Map
