@@ -11,9 +11,27 @@ public class MapDemo {
 	 * data cache (k,v) no duplicate keys, duplicate value is ok use immutable
 	 * object as key eg. String
 	 * 
-	 * non synchronized (better performance) but can be synchronized
-	 * appropriately if needed. Is preferred relative to legacy HashTable
-	 * (deprecated) which is synchronized
+	 * HashMap -> non synchronized (better performance). Legacy
+	 * HashTable(deprecated) which is synchronized
+	 * 
+	 * ConcurrentHashMap: HashMap to be used in multithreaded applications.
+	 * EnumMap: HashMap with Enum values as keys. LinkedHashMap: HashMap with
+	 * predictable iteration order (great for FIFO/LIFO caches)
+	 * 
+	 * Key notes: Choose an initial capacity high enough to minimize the
+	 * frequency of rehashing.
+	 * 
+	 * Collision happens -> HashMap performance is degraded ->Colliding entries
+	 * are chained in LinkedList instead of k-v storage.
+	 * 
+	 * Time complexity of hashmap iteration is O(n) where n= capacity + size.
+	 * (Java 8 -> if running in worst-case performance scenario, -> converts the
+	 * list into a binary search tree)
+	 * 
+	 * reference rsc:
+	 * https://dzone.com/articles/getting-the-most-out-of-your-hashmaps
+	 * https://www.linkedin.com/pulse/10-things-java-developer-should-know-
+	 * hashmap-chinmay-parekh/
 	 * 
 	 */
 	private static void hashMap() {
@@ -36,7 +54,7 @@ public class MapDemo {
 		for (String name : names) {
 			System.out.println(name + " " + map1.get(name));
 		}
-		
+
 		names.forEach(m -> System.out.println("Using Lambda on Key Set -> Key: " + m));
 
 		System.out.println("---------------- Iterate using EntrySet ----------------");
@@ -48,14 +66,14 @@ public class MapDemo {
 		for (Map.Entry<String, Integer> mapping : mappings) {
 			System.out.println("Name: " + mapping.getKey() + ", Age: " + mapping.getValue());
 		}
-		
+
 		System.out.println("---------------- Iterate using Lambda Foreach ----------------");
-		
-		map1.forEach((k,v) -> {
-			System.out.println("key: "+ k);
-			System.out.println("Value: "+ v);
+
+		map1.forEach((k, v) -> {
+			System.out.println("key: " + k);
+			System.out.println("Value: " + v);
 		});
-		
+
 		names.remove("Ken"); // removing the key from the new names Set will
 								// affect the original Map
 		System.out.println(map1);
@@ -63,27 +81,84 @@ public class MapDemo {
 
 	private static void MapOfMaps() {
 		Map<String, Map<String, Object>> Courses = new HashMap<>();
-		
+
 		Map<String, Object> c1ModDetails = new HashMap<>();
 		c1ModDetails.put("duration", 12);
 		c1ModDetails.put("trainer", "trainer1");
 		c1ModDetails.put("location", "room xyz");
 		
+		Courses.put("C1", c1ModDetails);
+
 		Map<String, Object> c2ModDetails = new HashMap<>();
 		c2ModDetails.put("duration", 24);
 		c2ModDetails.put("trainer", "trainer2");
 		c2ModDetails.put("location", "room abc");
 		
-		Courses.put("C1", c1ModDetails);
 		Courses.put("C2", c2ModDetails);
-		
+
 		System.out.println("Courses: " + Courses);
 		
+		Map<String, Object> sample = Courses.get("C1");
+		System.out.println(sample);
+		int dur = (Integer)sample.get("duration");
+		System.out.println(dur);
+		
+		//creates new HM with existing
+		Map<String, Map<String, Object>> newMap = new HashMap<>(Courses);
+		System.out.println(newMap);
+		
+		Map<String, Map<String, Object>> newMap2 = new HashMap<>();
+		newMap2.putAll(Courses);
+		System.out.println(newMap2 + ", " + newMap2.size());
+        
+		newMap2.clear();
+        System.out.println(newMap2);
+
+
+	}
+
+	static class WordFrequencyFinder {
+
+		public static void incrementIfKeyPresent() {
+			// check if a key already exists or not -> do something
+			Map<String, Integer> map = new HashMap<>(3);
+			{
+				map.put("Java", 0);
+				map.put("Jakarta", 0);
+				map.put("Eclipse", 0);
+			}
+
+			System.out.println(map);
+
+			String someText = new String("Java Java");
+			// read(someText, map);
+			readWithComputeIfPresent(someText, map);
+		}
+
+		public static void read(String text, Map<String, Integer> map) {
+			System.out.println(text);
+			for (String word : text.split(" ")) {
+				if (map.containsKey(word)) {
+					Integer value = map.get(word);
+					map.put(word, ++value);
+				}
+			}
+			System.out.println(map);
+			return;
+		}
+
+		public static void readWithComputeIfPresent(String text, Map<String, Integer> map) {
+			for (String word : text.split(" ")) {
+				map.computeIfPresent(word, (String key, Integer value) -> ++value);
+			}
+			System.out.println(map);
+		}
+
 	}
 
 	public static void main(String[] args) {
-		hashMap();
-		//MapOfMaps();
+		// hashMap();
+		MapOfMaps();
+		// WordFrequencyFinder.incrementIfKeyPresent();
 	}
-
 }
