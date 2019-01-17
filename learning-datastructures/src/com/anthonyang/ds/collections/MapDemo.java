@@ -6,6 +6,16 @@ import java.util.Set;
 
 public class MapDemo {
 
+	/*
+	 * --Map--
+	 * Benefits of Set and Map are the similar.
+	 * Fast lookup by key eg. data cache (k,v) no duplicate keys, duplicate
+	 * value is ok use immutable object as key eg. String
+	 * 
+	 * non synchronized (better performance) but can be synchronized appropriately if needed.
+	 * Is preferred relative to legacy HashTable (deprecated) which is synchronized
+	 * 
+	 */
 	private static void hashMap() {
 		// programming to Map Interface.
 		Map<String, Integer> map1 = new HashMap<>();
@@ -28,13 +38,18 @@ public class MapDemo {
 		}
 
 		System.out.println("--- Iterate using EntrySet ---");
-		Set<Map.Entry<String, Integer>> mappings = map1.entrySet(); //returns a set of map entry (k,v) pair
-		
+		Set<Map.Entry<String, Integer>> mappings = map1.entrySet(); // returns a
+																	// set of
+																	// map entry
+																	// (k,v)
+																	// pair
+
 		for (Map.Entry<String, Integer> mapping : mappings) {
 			System.out.println("Name: " + mapping.getKey() + ", Age: " + mapping.getValue());
 		}
 
-		names.remove("Ken"); //removing the key from the new names Set will affect the original Map
+		names.remove("Ken"); // removing the key from the new names Set will
+								// affect the original Map
 		System.out.println(map1);
 	}
 
