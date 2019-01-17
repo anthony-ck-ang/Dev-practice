@@ -30,27 +30,32 @@ public class MapDemo {
 		System.out.println("Contains James <key>? " + map1.containsKey("James"));
 		System.out.println("James Age <value>: " + map1.get("James"));
 
-		System.out.println("--- Iterate using keySet ---");
+		System.out.println("---------------- Iterate using keySet ----------------");
 		Set<String> names = map1.keySet(); // returns a set of all keys in map
 		System.out.println(names);
 		for (String name : names) {
 			System.out.println(name + " " + map1.get(name));
 		}
+		
+		names.forEach(m -> System.out.println("Using Lambda on Key Set -> Key: " + m));
 
-		System.out.println("--- Iterate using EntrySet ---");
+		System.out.println("---------------- Iterate using EntrySet ----------------");
 		Set<Map.Entry<String, Integer>> mappings = map1.entrySet(); // returns a
 																	// set of
 																	// map entry
 																	// (k,v)
 																	// pair
-
 		for (Map.Entry<String, Integer> mapping : mappings) {
 			System.out.println("Name: " + mapping.getKey() + ", Age: " + mapping.getValue());
 		}
 		
-		System.out.println("-------------------");
-		mappings.forEach(m -> System.out.println("Using Lambda: " + m.getKey() + " " + m.getValue()));
-
+		System.out.println("---------------- Iterate using Lambda Foreach ----------------");
+		
+		map1.forEach((k,v) -> {
+			System.out.println("key: "+ k);
+			System.out.println("Value: "+ v);
+		});
+		
 		names.remove("Ken"); // removing the key from the new names Set will
 								// affect the original Map
 		System.out.println(map1);
