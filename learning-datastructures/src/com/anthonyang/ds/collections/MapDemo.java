@@ -7,13 +7,13 @@ import java.util.Set;
 public class MapDemo {
 
 	/*
-	 * --Map--
-	 * Benefits of Set and Map are the similar.
-	 * Fast lookup by key eg. data cache (k,v) no duplicate keys, duplicate
-	 * value is ok use immutable object as key eg. String
+	 * --Map-- Benefits of Set and Map are the similar. Fast lookup by key eg.
+	 * data cache (k,v) no duplicate keys, duplicate value is ok use immutable
+	 * object as key eg. String
 	 * 
-	 * non synchronized (better performance) but can be synchronized appropriately if needed.
-	 * Is preferred relative to legacy HashTable (deprecated) which is synchronized
+	 * non synchronized (better performance) but can be synchronized
+	 * appropriately if needed. Is preferred relative to legacy HashTable
+	 * (deprecated) which is synchronized
 	 * 
 	 */
 	private static void hashMap() {
@@ -47,14 +47,38 @@ public class MapDemo {
 		for (Map.Entry<String, Integer> mapping : mappings) {
 			System.out.println("Name: " + mapping.getKey() + ", Age: " + mapping.getValue());
 		}
+		
+		System.out.println("-------------------");
+		mappings.forEach(m -> System.out.println("Another way..." + m.getKey() + " " + m.getValue()));
 
 		names.remove("Ken"); // removing the key from the new names Set will
 								// affect the original Map
 		System.out.println(map1);
 	}
 
+	private static void MapOfMaps() {
+		Map<String, Map<String, Object>> Courses = new HashMap<>();
+		
+		Map<String, Object> c1ModDetails = new HashMap<>();
+		c1ModDetails.put("duration", 12);
+		c1ModDetails.put("trainer", "trainer1");
+		c1ModDetails.put("location", "room xyz");
+		
+		Map<String, Object> c2ModDetails = new HashMap<>();
+		c2ModDetails.put("duration", 24);
+		c2ModDetails.put("trainer", "trainer2");
+		c2ModDetails.put("location", "room abc");
+		
+		Courses.put("C1", c1ModDetails);
+		Courses.put("C2", c2ModDetails);
+		
+		System.out.println("Courses: " + Courses);
+		
+	}
+
 	public static void main(String[] args) {
 		hashMap();
+		//MapOfMaps();
 	}
 
 }
