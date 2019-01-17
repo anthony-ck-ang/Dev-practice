@@ -1,5 +1,6 @@
 package com.anthonyang.ds.collections;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -64,19 +65,23 @@ public class SetDemo {
 	}
 
 	/*
-	 * 1. Natural ordering - java.lang.Comparable 
-	 * 	- the elements define internally how to be sorted
+	 * 1. Natural ordering - java.lang.Comparable - the elements define
+	 * internally how to be sorted
 	 * 
 	 * 2. External - java.util.Comparator
 	 */
-	
+
 	private static void treeSet() {
 		Book b1 = new Book("ABC", "JK", 2017);
 		Book b2 = new Book("ABC", "JK", 2017); // duplicate is not added
 		Book b3 = new Book("EF", "KFE", 1964);
 		Book b4 = new Book("NO", "KO", 2018);
 
-		Set<Book> books = new TreeSet<>();
+		/*
+		 * Using comparator -> can specify different comparator at run time for different
+		 * sorting logic (strategy pattern)
+		 */
+		Set<Book> books = new TreeSet<>(new TitleComparator());
 		books.add(b1);
 		books.add(b2);
 		books.add(b3);
@@ -96,7 +101,7 @@ public class SetDemo {
 
 }
 
-class Book implements Comparable<Object> {
+class Book /* implements Comparable<Object> */ {
 	private String title;
 	private String author;
 	private int year;
@@ -186,13 +191,13 @@ class Book implements Comparable<Object> {
 		return true;
 	}
 
-	@Override
-	public int compareTo(Object book) {
-		return getTitle().compareTo(((Book) book).getTitle()); // like comparing
-																// Strings,
-																// using String
-																// CompareTo
-	}
+	// @Override
+	// public int compareTo(Object book) {
+	// return getTitle().compareTo(((Book) book).getTitle()); // like comparing
+	// // Strings,
+	// // using String
+	// // CompareTo
+	// }
 
 	// @Override
 	// public int hashCode() {
@@ -207,5 +212,15 @@ class Book implements Comparable<Object> {
 	// (author.equals((((Book)obj).getAuthor())));
 	// }
 	//
+
+}
+
+class TitleComparator implements Comparator<Object> {
+
+	@Override
+	public int compare(Object o1, Object o2) {
+		System.out.println("Comparator used");
+		return (((Book) o1).getTitle()).compareTo(((Book) o2).getTitle());
+	}
 
 }
