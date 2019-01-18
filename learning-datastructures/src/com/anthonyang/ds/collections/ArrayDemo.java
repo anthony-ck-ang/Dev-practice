@@ -3,10 +3,12 @@ package com.anthonyang.ds.collections;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.IntBinaryOperator;
+import java.util.function.IntUnaryOperator;
 
 public class ArrayDemo {
 
-	private static void ArraysSequentialDemo() {
+	private static void arraysSequential() {
 		String[] stringArray = new String[] { "aaa", "bbb" };
 		// asList() -> most commonly used
 		List<String> strings = Arrays.asList(stringArray); // fixed-size
@@ -52,42 +54,142 @@ public class ArrayDemo {
 
 		// Binary Search: int binarySearch(int[], int);
 		// returns index if element found
-		// otherwise returns -(insertion point) - 1 eg. 5 ->  -(1) - 1 = -2
+		// otherwise returns -(insertion point) - 1 eg. 5 -> -(1) - 1 = -2
 		// input array must be sorted. Otherwise, behavior is undefined
 		System.out.println("index returned by binary search: " + Arrays.binarySearch(new int[] { 4, 23, 59 }, 5));
 
-		int[] newArray = Arrays.copyOf(iArray, 6);//this is cleaner and easier
-		System.out.println("newArray: " + Arrays.toString(newArray)); //newArray: [4, 23, 59, 0, 0, 0]
-		
+		int[] newArray = Arrays.copyOf(iArray, 6);// this is cleaner and easier
+		// newArray:
+		// [4,
+		// 23,
+		// 59,
+		// 0, 0,
+		// 0]
+		System.out.println("newArray: " + Arrays.toString(newArray)); 
+
 		int[] newArray1 = new int[6];
-		//void java.lang.System.arraycopy(Object src, int srcPos, Object dest, int destPos, int length)
-		System.arraycopy(iArray, 0, newArray1, 3, iArray.length); 
-		System.out.println("newArray1: " + Arrays.toString(newArray1));//newArray1: [0, 0, 4, 23, 59, 0]
-		
+		// void java.lang.System.arraycopy(Object src, int srcPos, Object dest,
+		// int destPos, int length)
+		System.arraycopy(iArray, 0, newArray1, 3, iArray.length);
+		System.out.println("newArray1: " + Arrays.toString(newArray1));// newArray1:
+																		// [0,
+																		// 0, 4,
+																		// 23,
+																		// 59,
+																		// 0]
+
 		Arrays.fill(newArray, 13);
-		System.out.println("Fill with 13: " + Arrays.toString(newArray)); //Fill with 13: [13, 13, 13, 13, 13, 13]
-	
-		System.out.println("Equals? " + Arrays.equals(iArray, newArray)); //false
-		
+		System.out.println("Fill with 13: " + Arrays.toString(newArray)); // Fill
+																			// with
+																			// 13:
+																			// [13,
+																			// 13,
+																			// 13,
+																			// 13,
+																			// 13,
+																			// 13]
+
+		System.out.println("Equals? " + Arrays.equals(iArray, newArray)); // false
+
 		// Arrays.deepEquals(Object[], Object[]);
-		//  Returns true if arrays are deeply equal to one another. 
-		//  Appropriate for nested arrays
-		int[][][] deepArray1 = { { {1, 2, 3}, {4, 5, 6} }, { {1, 2, 3}, {4, 5, 6} } };
-		int[][][] deepArray2 = { { {1, 2, 3}, {4, 5, 6} }, { {1, 2, 3}, {4, 5, 6} } };
-		//int[][] deepArray1 = {{1, 2, 3}};
-		//int[][] deepArray2 = {{1, 2, 3}}; 
-		//int[] deepArray1 = {1, 2, 3}; // Covariance: Does not work as int[] is not a subtype of Object[] eg. Integer is a subtype of Object
-		//int[] deepArray2 = {1, 2, 3}; // int[] is an object != Array of Objects
+		// Returns true if arrays are deeply equal to one another.
+		// Appropriate for nested arrays
+		int[][][] deepArray1 = { { { 1, 2, 3 }, { 4, 5, 6 } }, { { 1, 2, 3 }, { 4, 5, 6 } } };
+		int[][][] deepArray2 = { { { 1, 2, 3 }, { 4, 5, 6 } }, { { 1, 2, 3 }, { 4, 5, 6 } } };
+		// int[][] deepArray1 = {{1, 2, 3}};
+		// int[][] deepArray2 = {{1, 2, 3}};
+		// int[] deepArray1 = {1, 2, 3}; // Covariance: Does not work as int[]
+		// is not a subtype of Object[] eg. Integer is a subtype of Object
+		// int[] deepArray2 = {1, 2, 3}; // int[] is an object != Array of
+		// Objects
 		System.out.println("Deep Array Equals? " + Arrays.deepEquals(deepArray1, deepArray2));
-		
-		Object[] objArray = new int[][][] {{ {1, 2, 3} , {2, 3, 4} }}; //an array of int[][] (2 dimension array)
+
+		Object[] objArray = new int[][][] { { { 1, 2, 3 }, { 2, 3, 4 } } }; // an
+																			// array
+																			// of
+																			// int[][]
+																			// (2
+																			// dimension
+																			// array)
 		int[][] ia = (int[][]) objArray[0];
 		System.out.println(ia[1][2]);
-		
-		//https://docs.oracle.com/javase/7/docs/api/java/util/Arrays.html
+
+		// https://docs.oracle.com/javase/7/docs/api/java/util/Arrays.html
+	}
+
+	private static void arraysParallel() {
+
+		// For large arrays on multi-core. Min size atleast 1 >> 13 = 8192
+		int[] iArray = { 23, 4, 59 };
+		Arrays.parallelSort(iArray);
+		System.out.println("iArray parallel sort: " + Arrays.toString(iArray));
+
+		/*
+		 * Cumulates, in parallel, each element of the given array in place,
+		 * using the supplied function. For example if the array initially holds
+		 * [2, 1, 0, 3] and the operation performs addition, then upon return
+		 * the array holds [2, 3, 3, 6]. Parallel prefix computation is usually
+		 * more efficient than sequential loops for large arrays.
+		 */
+
+		// TODO change to lambda or method ref
+		IntBinaryOperatorImpl IntBinaryOperatorImpl = new IntBinaryOperatorImpl();
+		Arrays.parallelPrefix(iArray, IntBinaryOperatorImpl);
+		System.out.println("Parallel Prefix: " + Arrays.toString(iArray));
+
+		IntUnaryOperatorImpl intUnaryOperatorImpl = new IntUnaryOperatorImpl();
+		intUnaryOperatorImpl.setArray(iArray);
+		Arrays.parallelSetAll(iArray, intUnaryOperatorImpl);
+		System.out.println("Parallel Set All: " + Arrays.toString(iArray));
+
 	}
 
 	public static void main(String[] args) {
-		ArraysSequentialDemo();
+		// arraysSequential();
+		arraysParallel();
 	}
 }
+
+// Implements functional interface
+class IntBinaryOperatorImpl implements IntBinaryOperator {
+	@Override
+	public int applyAsInt(int left, int right) {
+		return left + right;
+	}
+
+class IntUnaryOperatorImpl implements IntUnaryOperator {
+		int[] iArray;
+		
+		public void setArray(int[] iArray) {
+			this.iArray = iArray;
+		}
+
+		@Override
+		public int applyAsInt(int i) {
+			if (iArray != null) {
+				return iArray[i]+5;
+			} else {
+				return i;
+			}		
+		}
+	}
+}
+
+class IntUnaryOperatorImpl implements IntUnaryOperator {
+	int[] iArray;
+	
+	public void setArray(int[] iArray) {
+		this.iArray = iArray;
+	}
+
+	@Override
+	public int applyAsInt(int i) {
+		if (iArray != null) {
+			return iArray[i]+5; //instead of for loop, apply a fix rate/amt to 
+		} else {
+			return i;
+		}		
+	}
+	
+}
+
