@@ -56,6 +56,18 @@ public class ArrayDemo {
 		// input array must be sorted. Otherwise, behavior is undefined
 		System.out.println("index returned by binary search: " + Arrays.binarySearch(new int[] { 4, 23, 59 }, 5));
 
+		int[] newArray = Arrays.copyOf(iArray, 6);//this is cleaner and easier
+		System.out.println("newArray: " + Arrays.toString(newArray)); //newArray: [4, 23, 59, 0, 0, 0]
+		
+		int[] newArray1 = new int[6];
+		//void java.lang.System.arraycopy(Object src, int srcPos, Object dest, int destPos, int length)
+		System.arraycopy(iArray, 0, newArray1, 3, iArray.length); 
+		System.out.println("newArray1: " + Arrays.toString(newArray1));//newArray1: [0, 0, 4, 23, 59, 0]
+		
+		Arrays.fill(newArray, 13);
+		System.out.println("Fill with 13: " + Arrays.toString(newArray)); //Fill with 13: [13, 13, 13, 13, 13, 13]
+	
+		System.out.println("Equals? " + Arrays.equals(iArray, newArray)); //false
 	}
 
 	public static void main(String[] args) {
