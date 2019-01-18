@@ -68,6 +68,23 @@ public class ArrayDemo {
 		System.out.println("Fill with 13: " + Arrays.toString(newArray)); //Fill with 13: [13, 13, 13, 13, 13, 13]
 	
 		System.out.println("Equals? " + Arrays.equals(iArray, newArray)); //false
+		
+		// Arrays.deepEquals(Object[], Object[]);
+		//  Returns true if arrays are deeply equal to one another. 
+		//  Appropriate for nested arrays
+		int[][][] deepArray1 = { { {1, 2, 3}, {4, 5, 6} }, { {1, 2, 3}, {4, 5, 6} } };
+		int[][][] deepArray2 = { { {1, 2, 3}, {4, 5, 6} }, { {1, 2, 3}, {4, 5, 6} } };
+		//int[][] deepArray1 = {{1, 2, 3}};
+		//int[][] deepArray2 = {{1, 2, 3}}; 
+		//int[] deepArray1 = {1, 2, 3}; // Covariance: Does not work as int[] is not a subtype of Object[] eg. Integer is a subtype of Object
+		//int[] deepArray2 = {1, 2, 3}; // int[] is an object != Array of Objects
+		System.out.println("Deep Array Equals? " + Arrays.deepEquals(deepArray1, deepArray2));
+		
+		Object[] objArray = new int[][][] {{ {1, 2, 3} , {2, 3, 4} }}; //an array of int[][] (2 dimension array)
+		int[][] ia = (int[][]) objArray[0];
+		System.out.println(ia[1][2]);
+		
+		//https://docs.oracle.com/javase/7/docs/api/java/util/Arrays.html
 	}
 
 	public static void main(String[] args) {
