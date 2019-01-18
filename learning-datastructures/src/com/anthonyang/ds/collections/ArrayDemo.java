@@ -133,8 +133,10 @@ public class ArrayDemo {
 		 */
 
 		// TODO change to lambda or method ref
-		IntBinaryOperatorImpl IntBinaryOperatorImpl = new IntBinaryOperatorImpl();
-		Arrays.parallelPrefix(iArray, IntBinaryOperatorImpl);
+		//IntBinaryOperatorImpl IntBinaryOperatorImpl = new IntBinaryOperatorImpl();
+		//Arrays.parallelPrefix(iArray, IntBinaryOperatorImpl);
+		Arrays.parallelPrefix(iArray, (left,right) -> {return left + right;});
+
 		System.out.println("Parallel Prefix: " + Arrays.toString(iArray));
 
 		IntUnaryOperatorImpl intUnaryOperatorImpl = new IntUnaryOperatorImpl();
@@ -151,29 +153,11 @@ public class ArrayDemo {
 }
 
 // Implements functional interface
-class IntBinaryOperatorImpl implements IntBinaryOperator {
-	@Override
-	public int applyAsInt(int left, int right) {
-		return left + right;
-	}
-
-class IntUnaryOperatorImpl implements IntUnaryOperator {
-		int[] iArray;
-		
-		public void setArray(int[] iArray) {
-			this.iArray = iArray;
-		}
-
-		@Override
-		public int applyAsInt(int i) {
-			if (iArray != null) {
-				return iArray[i]+5;
-			} else {
-				return i;
-			}		
-		}
-	}
-}
+//class IntBinaryOperatorImpl implements IntBinaryOperator {
+//	@Override
+//	public int applyAsInt(int left, int right) {
+//		return left + right;
+//	}
 
 class IntUnaryOperatorImpl implements IntUnaryOperator {
 	int[] iArray;
