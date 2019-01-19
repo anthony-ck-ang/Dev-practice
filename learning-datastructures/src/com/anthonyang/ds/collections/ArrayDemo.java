@@ -10,17 +10,29 @@ public class ArrayDemo {
 
 	private static void arraysSequential() {
 		String[] stringArray = new String[] { "aaa", "bbb" };
-		// asList() -> most commonly used
+		/*
+		 * asList() -> most commonly used. Use only to convert the list for iteration
+		 * purpose or to check its contents (no adding or removing is required) ->
+		 * better in performance.
+		 * 
+		 * List list = Arrays.asList(arr);
+		 */
 		List<String> strings = Arrays.asList(stringArray); // fixed-size
-
 		System.out.println("strings: " + strings);
 
-		strings.set(0, "kkk");
-		System.out.println("Updated Array: " + Arrays.toString(stringArray));
-
-		// Creating modifiable ArrayList from an Array
+		/*
+		 * Creating modifiable ArrayList from an Array
+		 * Use the below list conversion for add or removal operations
+		 */
+		ArrayList<String> arrayListsample = new ArrayList<String>(Arrays.asList(stringArray));
+		arrayListsample.add(0, "okokok");
+		System.out.println();
 		strings = new ArrayList(Arrays.asList(stringArray));
-
+		
+		//Check if an array contains value
+		System.out.println(Arrays.asList(stringArray).contains("aaa"));
+		
+	
 		// Showing varargs
 		strings = Arrays.asList("ccc", "ddd");
 		System.out.println("size: " + strings.size());
@@ -65,7 +77,7 @@ public class ArrayDemo {
 		// 59,
 		// 0, 0,
 		// 0]
-		System.out.println("newArray: " + Arrays.toString(newArray)); 
+		System.out.println("newArray: " + Arrays.toString(newArray));
 
 		int[] newArray1 = new int[6];
 		// void java.lang.System.arraycopy(Object src, int srcPos, Object dest,
@@ -132,10 +144,12 @@ public class ArrayDemo {
 		 * more efficient than sequential loops for large arrays.
 		 */
 
-		// TODO change to lambda or method ref
-		//IntBinaryOperatorImpl IntBinaryOperatorImpl = new IntBinaryOperatorImpl();
-		//Arrays.parallelPrefix(iArray, IntBinaryOperatorImpl);
-		Arrays.parallelPrefix(iArray, (left,right) -> {return left + right;});
+		// IntBinaryOperatorImpl IntBinaryOperatorImpl = new
+		// IntBinaryOperatorImpl();
+		// Arrays.parallelPrefix(iArray, IntBinaryOperatorImpl);
+		Arrays.parallelPrefix(iArray, (left, right) -> {
+			return left + right;
+		});
 
 		System.out.println("Parallel Prefix: " + Arrays.toString(iArray));
 
@@ -147,21 +161,21 @@ public class ArrayDemo {
 	}
 
 	public static void main(String[] args) {
-		// arraysSequential();
-		arraysParallel();
+		 arraysSequential();
+//		arraysParallel();
 	}
 }
 
 // Implements functional interface
-//class IntBinaryOperatorImpl implements IntBinaryOperator {
-//	@Override
-//	public int applyAsInt(int left, int right) {
-//		return left + right;
-//	}
+// class IntBinaryOperatorImpl implements IntBinaryOperator {
+// @Override
+// public int applyAsInt(int left, int right) {
+// return left + right;
+// }
 
 class IntUnaryOperatorImpl implements IntUnaryOperator {
 	int[] iArray;
-	
+
 	public void setArray(int[] iArray) {
 		this.iArray = iArray;
 	}
@@ -169,11 +183,11 @@ class IntUnaryOperatorImpl implements IntUnaryOperator {
 	@Override
 	public int applyAsInt(int i) {
 		if (iArray != null) {
-			return iArray[i]+5; //instead of for loop, apply a fix rate/amt to 
+			return iArray[i] + 5; // instead of for loop, apply a fix rate/amt
+									// to
 		} else {
 			return i;
-		}		
+		}
 	}
-	
-}
 
+}
