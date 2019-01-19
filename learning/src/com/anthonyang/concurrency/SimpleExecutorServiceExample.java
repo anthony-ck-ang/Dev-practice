@@ -1,12 +1,15 @@
 package com.anthonyang.concurrency;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 public class SimpleExecutorServiceExample {
 
-	private static void executorServiceWithLambda() {
+	private static void executorServiceRunnableTaskWithLambda() {
 		/*
 		 * Factory methods for creating different kinds of executor services.
 		 */
@@ -17,25 +20,78 @@ public class SimpleExecutorServiceExample {
 		 * successful completion.
 		 */
 		executor.submit(() -> {
-			//some tasks...
+			// some tasks...
 			System.out.println(Thread.currentThread().getName());
 		});
+
+		try {
+			System.out.println("attempt to shutdown executor");
+			executor.shutdown();
+			executor.awaitTermination(5, TimeUnit.SECONDS);
+		} catch (InterruptedException e) {
+			System.err.println("tasks interrupted");
+		} finally {
+			if (!executor.isTerminated()) {
+				System.err.println("cancel non-finished tasks");
+			}
+			executor.shutdownNow();
+			System.out.println("shutdown finished");
+		}
+	}
+
+	private static void executorServiceCallableTaskWithLambda() {
+		ExecutorService executor = Executors.newFixedThreadPool(1);
+
+		Callable<Integer> Ctask = () -> {
+			// some task...
+			try {
+				TimeUnit.SECONDS.sleep(1);
+				return 123;
+			} catch (InterruptedException e) {
+				throw new IllegalStateException("task interrupted", e);
+			}
+		};
+
+		@SuppressWarnings("unchecked")
+		Future<Integer> future = (Future) executor.submit(Ctask);
+
+		System.out.println("future done? " + future.isDone());
+
+		/*
+		 * Calling the method get() blocks the current thread and waits until
+		 * the callable completes before returning the actual result 123. get
+		 * method will return the task's result upon successful completion
+		 * 
+		 * Futures are tightly coupled to the underlying executor service. Every
+		 * non-terminated future will throw exceptions if you shutdown the
+		 * executor:
+		 */
+		Integer result = null;
+		try {
+			// executor.shutdownNow(); //will throw exceptions
+			result = future.get();
+
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+		}
+
+		System.out.println("future done? " + future.isDone());
+		System.out.println("result: " + result); // result: 123
 		
 		try {
-		    System.out.println("attempt to shutdown executor");
-		    executor.shutdown();
-		    executor.awaitTermination(5, TimeUnit.SECONDS);
+			System.out.println("attempt to shutdown executor");
+			executor.shutdown();
+			executor.awaitTermination(5, TimeUnit.SECONDS);
+		} catch (InterruptedException e) {
+			System.err.println("tasks interrupted");
+		} finally {
+			if (!executor.isTerminated()) {
+				System.err.println("cancel non-finished tasks");
+			}
+			executor.shutdownNow();
+			System.out.println("shutdown finished");
 		}
-		catch (InterruptedException e) {
-		    System.err.println("tasks interrupted");
-		}
-		finally {
-		    if (!executor.isTerminated()) {
-		        System.err.println("cancel non-finished tasks");
-		    }
-		    executor.shutdownNow();
-		    System.out.println("shutdown finished");
-		}
+
 	}
 
 	private static void executorService() {
@@ -74,13 +130,13 @@ public class SimpleExecutorServiceExample {
 	}
 
 	public static void main(String[] args) {
-		//executorService();
-		executorServiceWithLambda();
+		// executorService();
+		// executorServiceRunnableTaskWithLambda();
+		executorServiceCallableTaskWithLambda();
 	}
 }
 
 class WorkerThread implements Runnable {
-
 	private String command;
 
 	public WorkerThread(String s) {
