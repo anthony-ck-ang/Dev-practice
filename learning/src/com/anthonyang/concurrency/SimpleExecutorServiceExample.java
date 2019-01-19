@@ -6,7 +6,39 @@ import java.util.concurrent.TimeUnit;
 
 public class SimpleExecutorServiceExample {
 
-	public static void main(String[] args) {
+	private static void executorServiceWithLambda() {
+		/*
+		 * Factory methods for creating different kinds of executor services.
+		 */
+		ExecutorService executor = Executors.newSingleThreadExecutor();
+		/*
+		 * Submits a Runnable task for execution and returns a Future
+		 * representing that task. The Future's get method will return null upon
+		 * successful completion.
+		 */
+		executor.submit(() -> {
+			//some tasks...
+			System.out.println(Thread.currentThread().getName());
+		});
+		
+		try {
+		    System.out.println("attempt to shutdown executor");
+		    executor.shutdown();
+		    executor.awaitTermination(5, TimeUnit.SECONDS);
+		}
+		catch (InterruptedException e) {
+		    System.err.println("tasks interrupted");
+		}
+		finally {
+		    if (!executor.isTerminated()) {
+		        System.err.println("cancel non-finished tasks");
+		    }
+		    executor.shutdownNow();
+		    System.out.println("shutdown finished");
+		}
+	}
+
+	private static void executorService() {
 		// ref: https://dzone.com/articles/the-executor-framework
 
 		// Create a fixed size thread pool of 5 worker threads.
@@ -23,24 +55,28 @@ public class SimpleExecutorServiceExample {
 			Runnable worker = new WorkerThread("" + i); // using Threads
 			executor.execute(worker);
 		}
-//		executor.shutdown(); // Initiates an orderly shutdown in which
-//								// previously submitted tasks are executed, but
-//								// no new tasks will be accepted.
-//		
-//		while (!executor.isTerminated()) {
-//			//keep looping until true
-//		}
-		 executor.shutdown();
-		 try {
-		 if (!executor.awaitTermination(800, TimeUnit.MILLISECONDS)) {
-		 executor.shutdownNow();
-		 }
-		 } catch (InterruptedException e) {
-		 executor.shutdownNow();
-		 }
+		// executor.shutdown(); // Initiates an orderly shutdown in which
+		// // previously submitted tasks are executed, but
+		// // no new tasks will be accepted.
+		//
+		// while (!executor.isTerminated()) {
+		// //keep looping until true
+		// }
+		executor.shutdown();
+		try {
+			if (!executor.awaitTermination(800, TimeUnit.MILLISECONDS)) {
+				executor.shutdownNow();
+			}
+		} catch (InterruptedException e) {
+			executor.shutdownNow();
+		}
 		System.out.println("Finished all threads");
 	}
 
+	public static void main(String[] args) {
+		//executorService();
+		executorServiceWithLambda();
+	}
 }
 
 class WorkerThread implements Runnable {
@@ -54,7 +90,7 @@ class WorkerThread implements Runnable {
 	@Override
 	public void run() {
 		System.out.println(Thread.currentThread().getName() + " Start. Command = " + command);
-		//processCommand();
+		// processCommand();
 		System.out.println(Thread.currentThread().getName() + " End.");
 	}
 
