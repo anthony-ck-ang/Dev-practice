@@ -6,6 +6,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class SimpleExecutorServiceExample {
 
@@ -77,7 +78,7 @@ public class SimpleExecutorServiceExample {
 
 		System.out.println("future done? " + future.isDone());
 		System.out.println("result: " + result); // result: 123
-		
+
 		try {
 			System.out.println("attempt to shutdown executor");
 			executor.shutdown();
@@ -92,6 +93,55 @@ public class SimpleExecutorServiceExample {
 			System.out.println("shutdown finished");
 		}
 
+	}
+
+	private static void executorServiceTimeouts() {
+		/*
+		 * Any call to future.get() will block and wait until the underlying
+		 * callable is terminated. Worst case -> a callable runs forever ->
+		 * application unresponsive. Use a timeout.
+		 */
+		ExecutorService executor = Executors.newFixedThreadPool(1);
+
+		Future<Integer> f = (Future<Integer>) executor.submit(() -> {
+			try {
+				// sleeps 2 seconds before returning value
+				TimeUnit.SECONDS.sleep(2);
+				return 567;
+			} catch (InterruptedException e) {
+				throw new IllegalStateException("task interrupted", e);
+			}
+		});
+
+		Integer result = null;
+		try {
+			// timeout in 1 second -> TimeoutException as callable takes 2
+			// seconds to return value
+			result  = f.get(1, TimeUnit.SECONDS);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		} catch (TimeoutException e) {
+			e.printStackTrace();
+		}		
+		
+		System.out.println("future done? " + f.isDone());
+		System.out.println("result: " + result); // result: 123
+
+		try {
+			System.out.println("attempt to shutdown executor");
+			executor.shutdown();
+			executor.awaitTermination(5, TimeUnit.SECONDS);
+		} catch (InterruptedException e) {
+			System.err.println("tasks interrupted");
+		} finally {
+			if (!executor.isTerminated()) {
+				System.err.println("cancel non-finished tasks");
+			}
+			executor.shutdownNow();
+			System.out.println("shutdown finished");
+		}
 	}
 
 	private static void executorService() {
@@ -132,7 +182,8 @@ public class SimpleExecutorServiceExample {
 	public static void main(String[] args) {
 		// executorService();
 		// executorServiceRunnableTaskWithLambda();
-		executorServiceCallableTaskWithLambda();
+		//executorServiceCallableTaskWithLambda();
+		executorServiceTimeouts();
 	}
 }
 
