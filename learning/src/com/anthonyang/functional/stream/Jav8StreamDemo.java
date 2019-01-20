@@ -56,41 +56,132 @@ public class Jav8StreamDemo {
 	// "a2", "b1", "c2", "c1"));
 
 	private static void ETSLData() {
-		list.stream().filter(a -> a.startsWith("c")) // Returns a stream
-														// consisting of the
-														// elements of this
-														// stream that match the
-														// given predicate
-				.map(String::toUpperCase) // ClassName::methodName map, ->
-											// transform data
-				.sorted(). // sorted according to natural order
-				forEach(System.out::println);// terminal operation
+		
+		list.stream()
+			.filter(a -> a.startsWith("c")) 
+			.map(String::toUpperCase) // ClassName::methodName map, -> transform data
+			.sorted() //sorted according to natural order
+			.forEach(System.out::println);// terminal operation
 
 	}
 
 	private static void showDiffStreams() {
 		// stream() on a list of objects returns a regular object stream
-		list.stream().findFirst().ifPresent(System.out::println);
+		list.stream()
+			.findFirst()
+			.ifPresent(System.out::println);
 
 		// Stream.of() to create a stream from a bunch of object references.
 		// Omit creation of collection
-		Stream.of("a1", "a2", "a3").findFirst().ifPresent(System.out::println);
+		Stream.of("a1", "a2", "a3")
+			.findFirst()
+			.ifPresent(System.out::println);
 
-		//IntStreams can replace the regular for-loop utilizing IntStream.range()
-		IntStream.range(1, 4).forEach(System.out::println);
+		// IntStreams can replace the regular for-loop utilizing
+		// IntStream.range()
+		IntStream
+			.range(1, 4)
+			.forEach(System.out::println);
+		
 		System.out.println(IntStream.range(1, 4).sum());
-		LongStream.range(10000001, 10000005).forEach(System.out::println);
+		
+		LongStream
+			.range(10000001, 10000005)
+			.forEach(System.out::println);
 
+	}
+
+	private static void convertStreams() {
+
+		// obj stream -> primitive int stream
+		Stream.of("a1", "a2", "a3")
+			.map(s -> s.substring(1))
+			.mapToInt(Integer::parseInt)
+			.max()
+			.ifPresent(System.out::println);
+
+		// primitive stream -> obj stream
+		IntStream.range(1, 6)
+			.mapToObj(i -> "a" + i)
+			.forEach(System.out::println);
+			
+		//double -> int -> obj stream
+		Stream.of(1.0, 2.0,3.0)
+			.mapToInt(Double::intValue).mapToObj(fi -> "a" + fi )
+			.forEach(System.out::println);
+	}
+
+	private static void showStreamProcessOrder() {
+		/*
+		 * element moves and are processed vertically.
+		 * a -> filter -> foreach before b ->
+		 */
+		Stream.of("a", "b", "c", "d", "e")
+	    .filter(s -> {
+	        System.out.println("filter: " + s);
+	        return true;
+	    })
+	    .forEach(s -> System.out.println("forEach: " + s));
+		
+		System.out.println("-------------------------------------------------");
+		/*
+		 * anyMatch operation -> true as soon as the predicate (func I/method) 
+		 * is applied to the given input element.
+		 * 
+		 * In order to match, map is applied to 2 elements only instead of all elements.
+		 * map will be called as few as possible.
+		 */
+		Stream.of("e", "a", "c", "d", "b")
+	    .map(s -> {
+	        System.out.println("map: " + s);
+	        return s.toUpperCase();
+	    })
+	    .anyMatch(s -> {
+	        System.out.println("anyMatch: " + s);
+	        return s.startsWith("A");
+	    });	
 	}
 	
-	private static void convertStreams(){
+	private static void showStreamProcessOrder2(){
 		
+		/*
+		 * Actual number of executions can be greatly reduce 
+		 * if order of the operations is changed,
+		 * moving filter to the beginning of the chain. 
+		 */
+		Stream.of("e", "a", "c", "d", "b")
+	    .filter(s -> {
+	        System.out.println("filter: " + s);
+	        return s.startsWith("a");
+	    })
+	    .map(s -> {
+	        System.out.println("map: " + s);
+	        return s.toUpperCase();
+	    })
+	    .forEach(s -> System.out.println("forEach: " + s));
+		/*
+		 *  filter: e
+			filter: a
+			map: a		-> only called once -> perform better for larger elements input
+			forEach: A
+			filter: c
+			filter: d
+			filter: b
+		 */
 	}
 
-	public static void main(String[] args) {
-		//showDiffStreams();
-		convertStreams();
-		// ETSLData();
+	private static void showStreamProcessOrder3(){
+		
 	}
+	public static void main(String[] args) {
+		// showDiffStreams();
+		//convertStreams();
+		// ETSLData();
+		//showStreamProcessOrder();
+		showStreamProcessOrder2();
+		showStreamProcessOrder3();
+	}
+
+
 
 }
