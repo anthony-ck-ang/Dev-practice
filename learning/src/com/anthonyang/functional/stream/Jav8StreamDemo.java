@@ -1,12 +1,13 @@
 package com.anthonyang.functional.stream;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.DoubleStream;
+import java.util.function.Supplier;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
+
+import javax.swing.plaf.synth.SynthScrollBarUI;
 
 public class Jav8StreamDemo {
 
@@ -197,7 +198,7 @@ public class Jav8StreamDemo {
 		/*
 		 * sorted is never called because filter reduces the input collection to just one element.
 		 * (greatly increase performance for larger input collections)
-		 * 
+		 * Use filter*, use sort only if necessary (diff use case)
 		 */
 		Stream.of("e", "a", "c", "d", "b")
 	    .filter(s -> {
@@ -215,15 +216,44 @@ public class Jav8StreamDemo {
 	    .forEach(s -> System.out.println("forEach: " + s));
 		
 	}
+	
+	private static void showReuseStreamException() {
+		/*
+		 * Java 8 streams cannot be reused. 
+		 * Stream is closed when terminal operation is called.
+		 */
+		
+		Stream<String> stream =
+			    Stream.of("e", "a", "c", "d", "b")
+			        .filter(s -> s.startsWith("a"));
+
+			stream.anyMatch(s -> true);    // ok
+			//stream.noneMatch(s -> true);   // exception
+			
+		System.out.println("-------------------------------------------------");	
+		
+		//supplier of stream results.
+		Supplier<Stream<String>> streamSupplier = () -> Stream.of("e", "a", "c", "d", "b")
+			            .filter(s -> s.startsWith("a"));
+		/*
+		 * .get() -> get a result
+		 *  get() -> constructs and saves a new stream -> use to call on the desired terminal operation.
+		 */
+		System.out.println(streamSupplier.get().anyMatch(s -> true));
+		System.out.println(streamSupplier.get().noneMatch(s -> true));
+		
+		
+	}
+
+	
 	public static void main(String[] args) {
 		// showDiffStreams();
 		//convertStreams();
 		// ETSLData();
 		//showStreamProcessOrder();
 		//showStreamProcessOrder2();
-		showStreamProcessOrder3();
-	}
-
-
+		//showStreamProcessOrder3();
+		showReuseStreamException();
+	}	
 
 }
