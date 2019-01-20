@@ -171,6 +171,48 @@ public class Jav8StreamDemo {
 	}
 
 	private static void showStreamProcessOrder3(){
+		/*
+		 * Sorting -> stateful intermediate operation,
+		 *  in order to sort a collection of elements you have to maintain state during ordering.
+		 *  **sort is executed on the entire input collection (executed horizontally).
+		 *  sort is called multiple times for multiple combinations on every element in the input collection.
+		 */
+		Stream.of("e", "a", "c", "d", "b")
+	    .sorted((s1, s2) -> {
+	        System.out.printf("sort: %s -> %s\n", s1, s2);
+	        return s1.compareTo(s2);
+	    })
+	    .filter(s -> {
+	        System.out.println("filter: " + s);
+	        return s.startsWith("a");
+	    })
+	    .map(s -> {
+	        System.out.println("map: " + s);
+	        return s.toUpperCase();
+	    })
+	    .forEach(s -> System.out.println("forEach: " + s));
+		
+		System.out.println("-------------------------------------------------");
+		
+		/*
+		 * sorted is never called because filter reduces the input collection to just one element.
+		 * (greatly increase performance for larger input collections)
+		 * 
+		 */
+		Stream.of("e", "a", "c", "d", "b")
+	    .filter(s -> {
+	        System.out.println("filter: " + s);
+	        return s.startsWith("a");
+	    })
+	    .sorted((s1, s2) -> {
+	        System.out.printf("sort: %s; %s\n", s1, s2);
+	        return s1.compareTo(s2);
+	    })
+	    .map(s -> {
+	        System.out.println("map: " + s);
+	        return s.toUpperCase();
+	    })
+	    .forEach(s -> System.out.println("forEach: " + s));
 		
 	}
 	public static void main(String[] args) {
@@ -178,7 +220,7 @@ public class Jav8StreamDemo {
 		//convertStreams();
 		// ETSLData();
 		//showStreamProcessOrder();
-		showStreamProcessOrder2();
+		//showStreamProcessOrder2();
 		showStreamProcessOrder3();
 	}
 
