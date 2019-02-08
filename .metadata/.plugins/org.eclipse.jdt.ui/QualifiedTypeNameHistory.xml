@@ -23,4 +23,6 @@
 <fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="java.util.stream.Collectors"/>
 <fullyQualifiedTypeName name="java.util.Map"/>
+<fullyQualifiedTypeName name="com.anthonyang.basic.Student"/>
+<fullyQualifiedTypeName name="com.anthonyang.basic.Course"/>
 </qualifiedTypeNameHistroy>

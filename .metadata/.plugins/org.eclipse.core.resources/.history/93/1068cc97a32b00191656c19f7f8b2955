@@ -16,7 +16,7 @@ public class StudentTest2 {
 
 		// Setting input
 		Student student = new Student("Joshua", "Male");
-		Course course1 = new Course(1, "Java In-Depth", "dept1");
+		Course course1 = new Course(1, "Java In-Depth", null);
 
 		// Method execution
 		student.enroll(course1);
