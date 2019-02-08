@@ -1,0 +1,21 @@
+package com.anthonyang.ds.collections;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class ListDemo {
+	
+	private static void removeFromList() {
+		ArrayList<String> list = new ArrayList<String>(Arrays.asList("a", "b", "c", "d"));
+		 
+		for (String s : list) {
+			if (s.equals("a"))
+				list.remove(s);
+		}
+	}
+
+	public static void main(String[] args) {
+		removeFromList();
+	}
+
+}

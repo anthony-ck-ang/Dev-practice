@@ -1,8 +1,0 @@
-package com.anthonyang.ds.hashtable;
-
-public class HashTable {
-
-	String [] hashArray;
-	int arraySize;
-	int size = 0; //counter for number of elements in hashtable
-}

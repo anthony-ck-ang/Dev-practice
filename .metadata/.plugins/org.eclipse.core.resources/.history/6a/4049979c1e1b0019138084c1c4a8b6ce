@@ -1,0 +1,28 @@
+package com.anthonyang.concurrency;
+
+public class FirstThread {
+
+	private static void firstThread() {
+		Task task = new Task();
+	}
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		firstThread();
+	}
+
+}
+
+/*
+ * Runnable interface should be implemented by any class whose instances are
+ * intended to be executed by a thread.
+ */
+class Task implements Runnable {
+
+	@Override
+	public void run() {
+		System.out.println("Inside run...");
+
+	}
+
+}

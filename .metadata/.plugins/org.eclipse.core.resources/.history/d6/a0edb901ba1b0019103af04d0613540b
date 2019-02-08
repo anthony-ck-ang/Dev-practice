@@ -1,0 +1,34 @@
+package com.anthonyang.ds.collections;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+
+public class ListDemo {
+
+	private static void removeFromList() {
+		ArrayList<String> list = new ArrayList<String>(Arrays.asList("a", "b", "c", "d"));
+
+		// java.util.ConcurrentModificationException
+		// for (String s : list) {
+		// if (s.equals("a"))
+		// list.remove(s);
+		// }
+
+		
+		//use this
+		Iterator<String> iter = list.iterator();
+		while (iter.hasNext()) {
+			String s = iter.next();
+
+			if (s.equals("a")) {
+				iter.remove();
+			}
+		}
+	}
+
+	public static void main(String[] args) {
+		removeFromList();
+	}
+
+}

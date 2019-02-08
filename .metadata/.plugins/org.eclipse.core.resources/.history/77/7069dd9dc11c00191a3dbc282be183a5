@@ -1,0 +1,26 @@
+package com.anthonyang.functional.stream;
+
+public class Jav8AdvStreamDemo {
+
+	public static void main(String[] args) {
+		
+
+	}
+
+}
+
+class Person {
+    String name;
+    int age;
+
+    Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+}
+

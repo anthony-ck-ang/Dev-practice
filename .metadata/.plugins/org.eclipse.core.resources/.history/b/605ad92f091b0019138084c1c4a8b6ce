@@ -1,0 +1,29 @@
+package com.anthonyang.ds.collections;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class CollectionsDemo {
+	
+	private static void collectionsDemo() {
+		// boolean addAll(Collection<? super T> c, T... elements);
+		List<String> list = new ArrayList<>();
+		list.add("a");
+		list.add("b");
+		list.add("c");
+		
+		String[] array = {"d"};
+		
+		Collections.addAll(list, array);
+		
+		System.out.println("list: " + list);
+		
+	}
+	
+
+	public static void main(String[] args) {
+
+	}
+
+}

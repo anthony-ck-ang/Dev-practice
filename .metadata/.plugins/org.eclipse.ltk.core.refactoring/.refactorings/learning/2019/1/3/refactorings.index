@@ -1,0 +1,12 @@
+1547815266864	Delete element
+1547816264830	Delete element
+1547816336824	Delete element
+1547816950600	Rename local variable 'john'
+1547816965111	Rename local variable 'anita'
+1547817297106	Rename local variable 'jimmy'
+1547817305719	Rename local variable 'joel'
+1547817854175	Delete element
+1547833168556	Delete element
+1547891298880	Rename method 'myThread'
+1547891840023	Inline local variable 'threadName'
+1547905893692	Rename method 'executorServiceWithLambda'

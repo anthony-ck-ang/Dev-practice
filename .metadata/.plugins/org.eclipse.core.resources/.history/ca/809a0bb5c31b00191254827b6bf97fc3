@@ -1,0 +1,64 @@
+package com.anthonyang.ds.collections;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedList;
+
+public class ListDemo {
+	
+	static ArrayList<Integer> arrayList = new ArrayList<Integer>();
+	static LinkedList<Integer> linkedList = new LinkedList<Integer>();
+
+	private static void removeFromList() {
+		ArrayList<String> list = new ArrayList<String>(Arrays.asList("a", "b", "c", "d"));
+
+		/*
+		 * Foreach loop -> compiler will make the .next() called after the
+		 * operation of removing element ->
+		 * java.util.ConcurrentModificationException
+		 */
+		// for (String s : list) {
+		// if (s.equals("a"))
+		// list.remove(s);
+		// }
+
+		// Use this, .next() must be called before .remove()
+		Iterator<String> listInter = list.iterator();
+		while (listInter.hasNext()) {
+			String s = listInter.next();
+
+			if (s.equals("a")) {
+				listInter.remove();
+			}
+		}
+		System.out.println(list);
+	}
+
+	private static void addOpArryListVsLinkList() {
+		/*
+		 * Use LinkedList for large number of sequential add/remove operations
+		 * (faster). There are no large number of random access of element.
+		 * Use ArrayList for random access get operation (by index).
+		 */
+
+		// ArrayList add
+		long startTime = System.nanoTime();
+		 
+		for (int i = 0; i < 100000; i++) {
+			arrayList.add(i);
+		}
+		long endTime = System.nanoTime();
+		long duration = endTime - startTime;
+		System.out.println("ArrayList add:  " + duration);
+		 
+		// LinkedList add
+		startTime = System.nanoTime();
+
+	}
+
+	public static void main(String[] args) {
+		removeFromList();
+	}
+
+}
